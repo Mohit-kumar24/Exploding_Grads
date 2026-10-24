@@ -1,0 +1,16 @@
+.git/
+.env
+.env*.local
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.zip
+logs/
+.venv/
+venv/
+/env/
+/ENV/
+.pytest_cache/
+.coverage
+htmlcov/

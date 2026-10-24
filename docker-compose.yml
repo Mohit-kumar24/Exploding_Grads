@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  harness:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kingdomforge_harness
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - MODE=full
+      - TASK_ID=task_3
+      - SEED=42
+    volumes:
+      - ./logs:/app/logs
+      - ./baseline-results:/app/baseline-results
+      - ./sample-trajectories:/app/sample-trajectories
+    restart: "no"

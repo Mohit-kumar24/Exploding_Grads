@@ -1,0 +1,145 @@
+{
+  "task_3": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_1": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_2": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_4": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_5": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_6": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_7": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_8": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_9": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_10": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_11": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_12": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  },
+  "task_13": {
+    "reference": {
+      "score": 1.0,
+      "passed": true
+    },
+    "noop": {
+      "score": 0.0,
+      "passed": true
+    },
+    "gate_passed": true
+  }
+}

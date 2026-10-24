@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KingdomForge — RL Environment & Evaluation Dashboard</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- React 18: Local vendor copy with CDN fallback for complete offline resilience -->
+  <script src="vendor/react.min.js"></script>
+  <script>window.React || document.write('<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin><\/script>')</script>
+  <script src="vendor/react-dom.min.js"></script>
+  <script>window.ReactDOM || document.write('<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin><\/script>')</script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0d14;
+      --bg-secondary: #121722;
+      --bg-card: rgba(18, 23, 34, 0.85);
+      --border-color: rgba(212, 175, 55, 0.25);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      
+      --gold-primary: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #997a15;
+      
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.12);
+      --ruby: #ef4444;
+      --ruby-bg: rgba(239, 68, 68, 0.12);
+      --sapphire: #3b82f6;
+      --sapphire-bg: rgba(59, 130, 246, 0.12);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-display: 'Cinzel', serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 45%);
+      min-height: 100vh;
+    }
+
+    .app-container {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 140px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-primary), transparent);
+    }
+
+    .title-area h1 {
+      font-family: var(--font-display);
+      font-size: 2.3rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--gold-light);
+      text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+      margin-bottom: 6px;
+    }
+
+    .title-area p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 720px;
+    }
+
+    .status-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: 1px solid transparent;
+      backdrop-filter: blur(8px);
+    }
+
+    .badge-success {
+      background: var(--emerald-bg);
+      color: var(--emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-info {
+      background: var(--sapphire-bg);
+      color: var(--sapphire);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .badge-gold {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .badge-ruby {
+      background: var(--ruby-bg);
+      color: var(--ruby);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .badge-gray {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-muted);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: currentColor;
+    }
+
+    /* Tabs Navigation */
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tab-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-btn.active {
+      color: var(--gold-light);
+      background: rgba(212, 175, 55, 0.1);
+      border-color: rgba(212, 175, 55, 0.3);
+      font-weight: 600;
+    }
+
+    /* Cards & Layout */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 1024px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* Interactive Controls */
+    .action-btn {
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold-light);
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-btn:hover {
+      background: rgba(212, 175, 55, 0.22);
+      border-color: var(--gold-primary);
+    }
+
+    .action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .select-input {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: var(--font-body);
+      outline: none;
+    }
+
+    .select-input:focus {
+      border-color: var(--gold-primary);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Metric Box */
+    .metric-box {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Table */
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--gold-light);
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    tr:hover td {
+      background: rgba(212, 175, 55, 0.02);
+    }
+
+    /* Steps Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 580px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .timeline-step {
+      background: rgba(0, 0, 0, 0.35);
+      border-left: 3px solid var(--gold-primary);
+      border-radius: 0 8px 8px 0;
+      padding: 16px;
+    }
+
+    .timeline-step.failure {
+      border-left-color: var(--ruby);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+
+    .step-hash {
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+    }
+
+    .step-tool {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--sapphire);
+      margin-bottom: 6px;
+    }
+
+    .step-code {
+      background: #07090e;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-top: 6px;
+    }
+
+    /* Terminal Preview Box */
+    .terminal-box {
+      background: #05070a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #94a3b8;
+      overflow-x: auto;
+    }
+
+    .term-line {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .term-gold { color: var(--gold-light); font-weight: 600; }
+    .term-green { color: var(--emerald); font-weight: 600; }
+    .term-red { color: var(--ruby); font-weight: 600; }
+    .term-blue { color: var(--sapphire); }
+    .term-yellow { color: var(--amber); }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+  </style>
+</head>
+<body>
+  <!-- Global Diagnostic Container (Ensures page is NEVER black even if scripts fail) -->
+  <div id="diagnostic-banner" style="display: none; background: rgba(239,68,68,0.15); border: 1px solid #ef4444; color: #fecaca; padding: 16px 24px; font-family: monospace; font-size: 0.9rem;"></div>
+
+  <div id="root">
+    <!-- Initial rendered fallback content while React mounts -->
+    <div class="app-container">
+      <header class="header">
+        <div class="title-area">
+          <h1>KingdomForge</h1>
+          <p>Reinforcement Learning Benchmark Dashboard — Initializing component runtime...</p>
+        </div>
+      </header>
+      <div class="card" style="text-align: center; padding: 48px 24px;">
+        <h3 style="color: var(--gold-light); font-family: var(--font-display); margin-bottom: 12px;">Loading KingdomForge Dashboard</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Connecting to verified local datasets (baseline-results/gate.json, sample-trajectories)...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global Error Catcher to prevent silent black screens
+    window.addEventListener('error', function(e) {
+      console.error('KingdomForge Dashboard Error:', e);
+      var banner = document.getElementById('diagnostic-banner');
+      if (banner) {
+        banner.style.display = 'block';
+        banner.innerHTML = '<strong>Dashboard Initialization Error:</strong> ' + (e.message || 'Unknown JavaScript exception') + 
+          (e.filename ? ' at ' + e.filename + ':' + e.lineno : '') + 
+          '<br><small style="color:#94a3b8;">If offline, ensure React UMD dependencies are available or run via <code>python scripts/serve_dashboard.py</code>.</small>';
+      }
+    });
+  </script>
+
+  <!-- Load Pure Pre-Compiled React 18 Application (Zero Babel Runtime Dependency) -->
+  <script src="dashboard_app.js"></script>
+
+
+  <script>
+    // Robust Fallback Mount Check
+    window.addEventListener('DOMContentLoaded', function() {
+      if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+        var banner = document.getElementById('diagnostic-banner');
+        if (banner) {
+          banner.style.display = 'block';
+          banner.innerHTML = '<strong>Notice:</strong> React 18 could not be loaded from unpkg CDN. ' +
+            'Please verify your internet connection or run <code>python scripts/serve_dashboard.py</code>.';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "task_id": "task_3",
+  "seed": 42,
+  "steps": 1,
+  "trajectory": [
+    {
+      "tool": "submit_answer",
+      "args": {
+        "answer": ""
+      },
+      "result": "Answer submitted: ",
+      "done": true,
+      "state_hash": "e9911c52"
+    }
+  ],
+  "final_state_hash": "e9911c52",
+  "termination_reason": "submitted",
+  "verification": {
+    "score": 0.0,
+    "passed": false,
+    "details": {
+      "market_built": false,
+      "farms_built": false,
+      "farm_count": 0,
+      "gold_target_met": false,
+      "gold_current": 40,
+      "pop_target_met": false,
+      "pop_current": 5,
+      "food_target_met": false,
+      "food_current": 25
+    },
+    "termination_reason": "submitted",
+    "state_hash": "e9911c52",
+    "steps_used": 1,
+    "verification_time_ms": 0.0
+  }
+}
