@@ -23,7 +23,7 @@ KingdomForge features **Benchmark v2**, consisting of 13 calibrated tasks across
 - **Reference Agent Gate**: Must score $\ge 0.95$ (achieved **1.0000** on all 13 tasks).
 - **No-Op Agent Gate**: Must score $\le 0.05$ (achieved **0.0000** on all 13 tasks).
 
-Verified results recorded in [`baseline-results/gate.json`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/baseline-results/gate.json):
+Verified results recorded in [`baseline-results/gate.json`](baseline-results/gate.json):
 
 | Task ID | Task Title | Difficulty | Max Turns | Ref Baseline | No-Op Baseline | Gate Check |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -47,7 +47,7 @@ Total: **13 / 13 tasks passed** (100% gate compliance).
 
 ## 3. Architecture & Security Invariants
 
-1. **Independent Programmatic Verification**: The agent cannot manipulate reward through linguistic persuasion or conversational hallucination. The [`Verifier`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/src/verifier/verifier.py) queries internal simulation state snapshots directly.
+1. **Independent Programmatic Verification**: The agent cannot manipulate reward through linguistic persuasion or conversational hallucination. The [`Verifier`](src/verifier/verifier.py) queries internal simulation state snapshots directly.
 2. **Strict Type & Argument Validation**: Boolean values passed to integer parameters (e.g. `count: true`) are explicitly rejected with parse errors. Negative quantities and unauthorized building types fail closed.
 3. **Technological Prerequisites**: High-tier facilities require prerequisite infrastructure (e.g., Castles require Workshops; Markets require lumber mills and farms).
 4. **Starvation Allocation Consistency**: Deaths deduct from idle workers first, then unassign workers from buildings, strictly preserving `idle + assigned == total`.
@@ -79,7 +79,8 @@ cp .env.example .env
 
 Run all commands from the project root:
 ```powershell
-Set-Location "C:\Users\ramba\Downloads\program\ML project\Reinforcement_Learning\Hackathon"
+# Navigate to the repository root
+cd .
 ```
 
 ### A. Preflight Connectivity Check
@@ -133,10 +134,10 @@ The harness outputs live, flushed terminal updates:
 - Automatic fallback to plain unstyled text when `NO_COLOR=1` is set.
 
 ### Telemetry Logs
-- Baseline gate summaries: [`baseline-results/gate.json`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/baseline-results/gate.json)
-- Curated genuine model runs: [`test-run-logs/`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/test-run-logs/)
-- Curated successful & failed trajectories: [`sample-trajectories/`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/sample-trajectories/)
-- Runtime episode logs: [`logs/`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/logs/)
+- Baseline gate summaries: [`baseline-results/gate.json`](baseline-results/gate.json)
+- Curated genuine model runs: [`test-run-logs/`](test-run-logs/)
+- Curated successful & failed trajectories: [`sample-trajectories/`](sample-trajectories/)
+- Runtime episode logs: [`logs/`](logs/)
 
 ---
 
@@ -148,7 +149,7 @@ To launch the dashboard:
 ```powershell
 python scripts/serve_dashboard.py
 ```
-Or open [`dashboard/index.html`](file:///C:/Users/ramba/Downloads/program/ML%20project/Reinforcement_Learning/Hackathon/dashboard/index.html) directly in any modern browser.
+Or open [`dashboard/index.html`](dashboard/index.html) directly in any modern browser.
 
 Features:
 - **Baseline Matrix**: Complete overview of all 13 tasks, difficulty ratings, turn budgets, and gate status.
