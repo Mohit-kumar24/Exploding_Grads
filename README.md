@@ -177,16 +177,16 @@ All required submission deliverables are generated, validated, and placed in the
 
 ```text
 Hackathon/
+|-- .dockerignore                    # Docker build context exclusions
 |-- .env.example                     # Environment template (model, credentials, tasks)
 |-- .gitignore                       # Git ignore protecting .env, logs, and artifacts
-|-- AGENTS.md                        # Persistent agent workspace guidelines
 |-- Dockerfile                       # Container definition for harness execution
 |-- README.md                        # Primary documentation and benchmark specification
 |-- check_model.py                   # Model connectivity and preflight verification script
 |-- deck.pdf                         # 10-slide presentation deck (submission artifact)
 |-- design-doc.pdf                   # 2-page system design document (submission artifact)
 |-- docker-compose.yml               # Container orchestration matching hackathon spec
-|-- kingdomforge_submission.zip      # Packaged submission archive (zero secrets, 79 files)
+|-- kingdomforge_submission.zip      # Packaged submission archive (zero secrets, 67 files)
 |-- requirements.txt                 # Python dependencies
 |-- run.py                           # Top-level CLI entrypoint for evaluation harness
 |-- test-results.json                # Cached test suite telemetry for dashboard API
@@ -196,23 +196,8 @@ Hackathon/
 |   |-- index.html                   # HTML entrypoint
 |   |-- dashboard_app.js             # Compiled vanilla React application
 |   `-- vendor/                      # Offline React, ReactDOM, Babel, and Tailwind CDN
-|-- docs/                            # In-depth architectural documentation
-|   |-- ARCHITECTURE.md              # System design and simulation invariants
-|   |-- IMPLEMENTATION_PLAN.md       # Implementation milestones and phases
-|   |-- REQUIREMENTS_CHECKLIST.md    # Requirement traceability matrix
-|   |-- SPECIFICATION_AUDIT.md       # Specification compliance verification
-|   |-- TASKS_BENCHMARK_V2.md        # Extended 13-task benchmark specifications
-|   |-- project/                     # Project tracking and handoff records
-|   |   |-- HANDOFF.md               # Operational handoff and status
-|   |   |-- PROJECT_STATE.md         # Detailed milestone and system state
-|   |   `-- TASKS.md                 # Task implementation tracking checklist
-|   `-- spec/                        # Problem statement and reference extracts
-|       |-- pdf_extract_primary.txt
-|       |-- pdf_extract_starter.txt
-|       `-- rl_hackathon_problem_statement.md
 |-- inputs/
 |   `-- append.txt                   # Prompt instruction file appended to system prompt
-|-- logs/                            # Local ephemeral evaluation logs (gitignored)
 |-- sample-trajectories/             # Real success and failure trajectories
 |   |-- failure.jsonl
 |   |-- failure_trajectory_task_3.json
@@ -221,15 +206,11 @@ Hackathon/
 |   |-- success_trajectory_task3.json
 |   `-- success_trajectory_task_3.json
 |-- scripts/                         # Build, presentation, and packaging utilities
-|   |-- generate_deck_pdf.py         # 10-slide PDF deck generator
-|   |-- generate_design_doc_pdf.py   # 2-page PDF design doc generator
-|   |-- package_submission.py        # Submission validation and zip packager
 |   `-- serve_dashboard.py           # Local server for the React presentation dashboard
 |-- src/                             # Core environment and harness source code
-|   |-- agents/                      # Baseline, reference, and model agents
-|   |   |-- baseline_agents.py       # No-op baseline agent
-|   |   |-- reference_agent.py       # Deterministic reference solution agent (Tasks 1-13)
-|   |   `-- tool_call_agent.py       # Model agent communicating with OpenAI-compatible API
+|   |-- agents/                      # Baseline and reference agents
+|   |   |-- noop_agent.py            # No-op baseline agent
+|   |   `-- reference_agent.py       # Deterministic reference solution agent (Tasks 1-13)
 |   |-- env/                         # Simulation environment and mechanics
 |   |   |-- database_env.py          # SQLite-backed state machine and invariants
 |   |   |-- tasks.py                 # Task definitions for Tasks 1-13
@@ -243,6 +224,6 @@ Hackathon/
 |   `-- verifier/                    # Independent ground-truth verifiers
 |       `-- verifier.py              # Programmatic state verifier and failure taxonomy
 |-- test-run-logs/                   # Genuine model evaluation logs for Tasks 1-7
-`-- tests/                           # 15 test suites (112 tests, 100% passing)
+`-- tests/                           # 15 test suites (116 tests, 100% passing)
 
 
